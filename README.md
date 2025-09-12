@@ -62,6 +62,17 @@ logistics-inventory-management-system/
    - `40_picking_schema.sql` → picking entities  
 4. Later, stored procedures and triggers will go into `90_procedures.sql` and `95_triggers.sql`.
 
+## 📜 Migration Log
+
+- **Base Schema (v1.0):** 4-layer design (Warehouse, Shop, Ordering, Picking).  
+- **Phase 1 (2025-09-12): Audit & Constraints**  
+  - Added `created_at` + `updated_at` timestamps to: WarehouseLocations, ShopLocations, Pickers, Boxes, OrderItems  
+  - Added `updated_at` to: ProductWarehouseStock, ProductShopStock  
+  - Enforced data-quality: CHECK (qty_picked <= qty_ordered) on OrderItems  
+  - Converted quantity fields to UNSIGNED (to avoid negatives)
+
+---
+
 ## Current Progress
 
 - Base schema for warehouse, shop, ordering, picking
