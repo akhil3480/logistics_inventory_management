@@ -43,9 +43,9 @@ logistics-inventory-management-system/
 │   ├── 20_shop_schema.sql  
 │   ├── 30_ordering_schema.sql  
 │   ├── 40_picking_schema.sql  
-│   ├── 90_procedures.sql  
+│   ├── 90_stored_procedures.sql  
 │   ├── 95_triggers.sql  
-│   ├── 99_seed_data.sql  
+│   ├── 99_seed_first_sample.sql  
 │   └── install_all.sql  
 ├── docs/               # ERD, diagrams  
 ├── README.md  
