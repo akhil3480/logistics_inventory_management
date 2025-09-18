@@ -6,10 +6,10 @@ The idea is that we have 3 warehouses, each connected to a shop (front stock are
 
 The goal of this project is to practice:
 
-- Designing normalized relational tables
-- Writing stored procedures and triggers for stock movement
-- Managing a project with Git and version control
-- Building something that looks and feels like a real logistics system
+- Designing normalized relational tables  
+- Writing stored procedures and triggers for stock movement  
+- Managing a project with Git and version control  
+- Building something that looks and feels like a real logistics system  
 
 ---
 
@@ -27,7 +27,8 @@ The goal of this project is to practice:
 
 - **Picking Layer**  
   Pickers scan and collect products from shop bins into boxes.  
-  Stock in the shop is reduced as items are picked.
+  Stock in the shop is reduced as items are picked.  
+  One box belongs to only one order, but an order can span multiple boxes.  
 
 ---
 
@@ -35,6 +36,7 @@ The goal of this project is to practice:
 
 logistics-inventory-management-system/
 
+```
 ├── database/           # SQL scripts  
 │   ├── 00_create_database.sql  
 │   ├── 10_warehouse_schema.sql  
@@ -48,6 +50,7 @@ logistics-inventory-management-system/
 ├── docs/               # ERD, diagrams  
 ├── README.md  
 └── .gitignore  
+```
 
 ---
 
@@ -55,12 +58,14 @@ logistics-inventory-management-system/
 
 1. Open **MySQL Workbench** (or MySQL CLI).  
 2. Run `install_all.sql` — this will create the database, all tables, and load some demo data.  
-3. After setup, you can open each file inside 'database/' to see how the project is structured:  
+3. After setup, you can open each file inside `database/` to see how the project is structured:  
    - `10_warehouse_schema.sql` → warehouse and product tables  
    - `20_shop_schema.sql` → shops and shop stock  
    - `30_ordering_schema.sql` → orders and order items  
    - `40_picking_schema.sql` → picking entities  
-4. Later, stored procedures and triggers will go into `90_procedures.sql` and `95_triggers.sql`.
+   - `90_procedures.sql` → stored procedures for workflows  
+
+---
 
 ## 📜 Migration Log
 
@@ -69,14 +74,21 @@ logistics-inventory-management-system/
   - Added `created_at` + `updated_at` timestamps to: WarehouseLocations, ShopLocations, Pickers, Boxes, OrderItems  
   - Added `updated_at` to: ProductWarehouseStock, ProductShopStock  
   - Enforced data-quality: CHECK (qty_picked <= qty_ordered) on OrderItems  
-  - Converted quantity fields to UNSIGNED (to avoid negatives)
+  - Converted quantity fields to UNSIGNED (to avoid negatives)  
 
 ---
 
 ## Current Progress
 
-- Base schema for warehouse, shop, ordering, picking
-- Seed data for 3 warehouses, 3 shops, and some products
-- Stored procedures for stock movement and picking
-- Triggers for auditing
-- ERD diagram and documentation
+- ✅ Base schema for warehouse, shop, ordering, picking  
+- ✅ Seed data for 3 warehouses, 3 shops, and some products  
+- ✅ Stored procedures implemented in `90_procedures.sql`:
+  - `sp_replenish_shop_from_warehouse` – move stock from warehouse to shop  
+  - `sp_create_order` – create a new order for a shop  
+  - `sp_add_order_item` – add products to an order  
+  - `sp_open_box_for_order` – assign a box to an order and picker  
+  - `sp_scan_pick` – pick products into a box (updates stock + order items)  
+  - `sp_close_box` – close a box once picking is complete  
+- 🔜 Triggers for automated status updates (planned)  
+- 🔜 Multi-order handling and advanced picking logic (planned)  
+- ✅ ERD diagram and documentation  
